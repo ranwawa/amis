@@ -25,6 +25,7 @@ import {supportStatic} from './StaticHoc';
 
 import type {Option} from 'amis-core';
 import type {ListenerAction} from 'amis-core';
+import {isInteger} from 'lodash';
 
 // declare function matchSorter(items:Array<any>, input:any, options:any): Array<any>;
 
@@ -300,7 +301,13 @@ export default class TextControl extends React.PureComponent<
     const {selectedOptions, onChange} = this.props;
 
     const newValue = selectedOptions.concat();
-    newValue.splice(index, 1);
+    const visibleOptions = this.readVisibleOptions();
+
+    if (visibleOptions[index].hideRemoveIcon) {
+      newValue.splice(index);
+    } else {
+      newValue.splice(index, 1);
+    }
 
     onChange(this.normalizeValue(newValue));
   }
@@ -652,6 +659,24 @@ export default class TextControl extends React.PureComponent<
       : JSON.stringify(value);
   }
 
+  readVisibleOptions() {
+    const {maxTagCount, selectedOptions} = this.props;
+    const iMaxTagCount = Number.parseInt(maxTagCount, 10);
+    const shouldFoldOptions =
+      iMaxTagCount > 0 && iMaxTagCount < selectedOptions.length;
+
+    let visibleOptions = selectedOptions;
+
+    if (shouldFoldOptions) {
+      visibleOptions = selectedOptions.slice(0, iMaxTagCount);
+      visibleOptions.push({
+        label: `+ ${selectedOptions.length - maxTagCount} ...`,
+        hideRemoveIcon: true
+      });
+    }
+    return visibleOptions;
+  }
+
   renderSugestMode() {
     const {
       className,
@@ -676,6 +701,7 @@ export default class TextControl extends React.PureComponent<
       creatable,
       borderMode,
       showCounter,
+      maxTagCount,
       maxLength,
       minLength,
       translate: __,
@@ -728,6 +754,8 @@ export default class TextControl extends React.PureComponent<
             });
           }
 
+          const visibleOptions = this.readVisibleOptions();
+
           return (
             <div
               className={cx(
@@ -753,7 +781,7 @@ export default class TextControl extends React.PureComponent<
                   </div>
                 ) : null}
 
-                {selectedOptions.map((item, index) =>
+                {visibleOptions.map((item, index) =>
                   multiple ? (
                     <div className={cx('TextControl-value')} key={index}>
                       <span className={cx('TextControl-valueLabel')}>
