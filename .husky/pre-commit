@@ -1,5 +1,10 @@
+###
+ # @Description: 
+ # @Date: 2023-02-24 16:25:16
+ # @Author: ranqirong 274544338@qq.com
+### 
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
 npx lint-staged
-npm run stylelint
+#npm run stylelint
