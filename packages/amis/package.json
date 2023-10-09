@@ -1,5 +1,5 @@
 {
-  "name": "amis",
+  "name": "zmn-amis",
   "version": "2.8.0-inputText.0",
   "description": "一种MIS页面生成工具",
   "main": "lib/index.js",
@@ -234,6 +234,9 @@
     "amis-ui": "*",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
+  },
+  "publishConfig": {
+    "registry": "https://maven.xiujiadian.com/repository/zmn_npm/"
   },
   "gitHead": "37d23b4a8eb1c663bc38e8dd9040889ea1526ec4"
 }
