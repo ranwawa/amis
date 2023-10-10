@@ -547,7 +547,6 @@ export default class TextControl extends React.PureComponent<
 
         // 输入框清空
         if (
-          !multiple &&
           creatable === false &&
           this.state.isOpen &&
           changes.isOpen === false
