@@ -1,10 +1,13 @@
 {
-  "name": "amis",
-  "version": "2.9.0",
+  "name": "zmn-amis",
+  "version": "2.9.0-inputText.1",
   "description": "一种MIS页面生成工具",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
+  "publishConfig": {
+    "registry": "https://maven.xiujiadian.com/repository/zmn_npm/"
+  },
   "scripts": {
     "test": "jest",
     "update-snapshot": "jest --updateSnapshot",
