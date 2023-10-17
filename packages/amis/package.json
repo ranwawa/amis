@@ -1,6 +1,6 @@
 {
   "name": "zmn-amis",
-  "version": "2.9.0-inputText.2",
+  "version": "2.9.0-inputText.3",
   "description": "一种MIS页面生成工具",
   "main": "lib/index.js",
   "module": "esm/index.js",
