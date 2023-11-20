@@ -1,5 +1,5 @@
 {
-  "name": "amis-core",
+  "name": "zmn-amis-core",
   "version": "3.5.1",
   "description": "amis-core",
   "main": "lib/index.js",
@@ -36,7 +36,7 @@
     "build": "npm run clean-dist && NODE_ENV=production rollup -c ",
     "build-esm": "npm run clean-dist && NODE_ENV=production rollup -c rollup.esm.config.js",
     "dev": "rollup -c -w",
-    "test": "jest",
+    "test": "jest --watch",
     "update-snapshot": "jest --updateSnapshot",
     "coverage": "jest --coverage",
     "clean-dist": "rimraf lib/** esm/**"
@@ -106,6 +106,9 @@
       "/node_modules/",
       "/.rollup.cache/"
     ]
+  },
+  "publishConfig": {
+    "registry": "https://maven.xiujiadian.com/repository/zmn_npm/"
   },
   "gitHead": "37d23b4a8eb1c663bc38e8dd9040889ea1526ec4"
 }

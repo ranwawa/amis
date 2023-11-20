@@ -1,12 +1,12 @@
 {
-  "name": "amis",
+  "name": "zmn-amis",
   "version": "3.5.1",
   "description": "一种MIS页面生成工具",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "update-snapshot": "jest --updateSnapshot",
     "coverage": "jest --coverage",
     "publish-to-internal": "sh build.sh && sh publish.sh",
@@ -244,6 +244,9 @@
     "office-viewer": "*",
     "react": ">=16.8.6",
     "react-dom": ">=16.8.6"
+  },
+  "publishConfig": {
+    "registry": "https://maven.xiujiadian.com/repository/zmn_npm/"
   },
   "gitHead": "37d23b4a8eb1c663bc38e8dd9040889ea1526ec4"
 }

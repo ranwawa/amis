@@ -995,18 +995,6 @@ export default class Table extends React.Component<TableProps, object> {
           ...rows.map((row: IRow) => row.data)
         ];
 
-    const rendererEvent = await dispatchEvent(
-      'selectedChange',
-      createObject(data, {
-        selectedItems,
-        unSelectedItems
-      })
-    );
-
-    if (rendererEvent?.prevented) {
-      return;
-    }
-
     if (shift) {
       store.toggleShift(item, value);
     } else {
@@ -1015,6 +1003,19 @@ export default class Table extends React.Component<TableProps, object> {
       // 但是注册了setValue动作后，会优先通过componentDidUpdate更新了selectedRows
       // 那么这里直接toggle就判断出错了 需要明确是选中还是取消选中
       item.toggle(value);
+    }
+
+    const rendererEvent = await dispatchEvent(
+      'selectedChange',
+      createObject(data, {
+        currentItem: item.data,
+        selectedItems: store.selectedRows.map(row => row.data),
+        unSelectedItems: store.unSelectedRows.map(row => row.data)
+      })
+    );
+
+    if (rendererEvent?.prevented) {
+      return;
     }
 
     this.syncSelected();
