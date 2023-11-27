@@ -1,5 +1,5 @@
 {
-  "name": "amis",
+  "name": "zmn-amis",
   "version": "3.5.3",
   "description": "一种MIS页面生成工具",
   "main": "lib/index.js",

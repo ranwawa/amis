@@ -1,5 +1,5 @@
 {
-  "name": "amis-core",
+  "name": "zmn-amis-core",
   "version": "3.5.3",
   "description": "amis-core",
   "main": "lib/index.js",
