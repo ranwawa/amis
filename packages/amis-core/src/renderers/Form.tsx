@@ -522,6 +522,18 @@ export default class Form extends React.Component<FormProps, object> {
         )
       );
     }
+
+    // withStore 里面与上层数据会做同步
+    // 这个时候变更的数据没有同步 onChange 出去，出现数据不一致的问题。
+    // https://github.com/baidu/amis/issues/8773
+    this.toDispose.push(
+      reaction(
+        () => store.initedAt,
+        () => {
+          store.inited && this.emitChange(!!this.props.submitOnChange, true);
+        }
+      )
+    );
   }
 
   componentDidMount() {
@@ -537,10 +549,9 @@ export default class Form extends React.Component<FormProps, object> {
       onValidate,
       onValidChange,
       promptPageLeave,
-      env,
-      rules
+      env
     } = this.props;
-
+    const rules = this.getNormalizedRules();
     this.mounted = true;
 
     if (onValidate) {
@@ -588,7 +599,7 @@ export default class Form extends React.Component<FormProps, object> {
       );
     }
 
-    if (Array.isArray(rules) && rules.length) {
+    if (rules.length) {
       this.toDispose.push(
         this.addHook(() => {
           if (!store.valid) {
@@ -677,6 +688,24 @@ export default class Form extends React.Component<FormProps, object> {
     this.toDispose = [];
     window.removeEventListener('beforeunload', this.beforePageUnload);
     this.unBlockRouting?.();
+  }
+
+  /** 获取表单联合校验的规则 */
+  getNormalizedRules() {
+    const {rules, translate: __} = this.props;
+
+    if (!Array.isArray(rules) || rules.length < 1) {
+      return [];
+    }
+
+    return rules
+      .map(item => ({
+        ...item,
+        ...(!item.message || typeof item.message !== 'string'
+          ? {message: __('Form.rules.message')}
+          : {})
+      }))
+      .filter(item => item.rule && typeof item.rule === 'string');
   }
 
   async dispatchInited(value: any) {
@@ -983,21 +1012,21 @@ export default class Form extends React.Component<FormProps, object> {
     return dispatchEvent(type, data);
   }
 
-  async emitChange(submit: boolean) {
+  async emitChange(submit: boolean, skipIfNothingChanges: boolean = false) {
     const {onChange, store, submitOnChange, dispatchEvent, data} = this.props;
 
     if (!isAlive(store)) {
       return;
     }
 
+    const diff = difference(store.data, store.pristine);
+    if (skipIfNothingChanges && !Object.keys(diff).length) {
+      return;
+    }
+
     // 提前准备好 onChange 的参数。
     // 因为 store.data 会在 await 期间被 WithStore.componentDidUpdate 中的 store.initData 改变。导致数据丢失
-    const changeProps = [
-      store.data,
-      difference(store.data, store.pristine),
-      this.props
-    ];
-
+    const changeProps = [store.data, diff, this.props];
     const dispatcher = await dispatchEvent(
       'change',
       createObject(data, store.data)
