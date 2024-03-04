@@ -1,6 +1,6 @@
 {
   "name": "amis",
-  "version": "6.2.1",
+  "version": "6.2.2-tableSelect",
   "description": "一种MIS页面生成工具",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -15,6 +15,9 @@
     "prettier": "prettier --write '{src,scss,examples}/**/**/*.{js,jsx,ts,tsx,scss,json}'",
     "build-schemas": "ts-node -O '{\"target\":\"es6\"}' ../../scripts/build-schemas.ts",
     "clean-dist": "rimraf lib/** esm/**"
+  },
+  "publishConfig": {
+    "registry": "https://maven.xiujiadian.com/repository/zmn_npm/"
   },
   "repository": {
     "type": "git",
